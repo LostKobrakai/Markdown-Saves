@@ -48,4 +48,22 @@ ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere
 > PHP should support mysqli
 > Recommended but not required
 
+Installation
+
+Die Installation von ProcessWire verläuft sehr ähnlich zu anderen vergleichbaren Systemen. Es werden Berechtigungen gecheckt, die MySQL und Adminzugangsdaten abgefragt und das System aufgespielt.
+
+Die ProcessWire Installation funktioniert über ein Webinterface, das mit dem Softwarepaket mitgeliefert wird. Beim ersten Aufruf des Stammverzeichnis wird man automatisch auf die Installationsseite weitergeleitet.
+
+Vor der Installation wird man dazu aufgefordert den Ordner der vorinstallierten Webseite umzubenennen. Alternativ könnte man sich unter dem angegebenen Link auch alternative Voreinstellungen herunterladen. Angeboten werden im Moment ein vorgefertigter Blog und ein "Blank"-Profil, dass nur die minimalsten Voreinstellungen enthält und nur für Entwickler interessant ist.
+
+Im ersten Schritt der Installation wird die Systemkompatibilität geprüft. Für die meisten Webserver sollte es hier keine Probleme geben. Die hier gezeigten Fehler entstanden aufgrund einer lokalen Installation. Die fehlenden Berechtigungen sind jedoch schnell behoben. Sollten noch andere Fehler angezeigt werden sollte man sich im Zweifelsfall die Systemadministratoren kontaktieren.
+
+Sobald alles in Ordnung ist kann es weiter gehen zum nächsten Schritt:
+
+Die MySQL Datenbankeinrichtung ist unerwartet schon Schritt 3. Hier sollten keinerlei Schwierigkeiten auftreten.
+
+Den Administrator Account erstellen und man ist so gut wie fertig.
+
+Man sollte in dem Masse der grünen und vermeintlich fertigen Balken nicht überlesen, dass aus Sicherheitsgründen noch einige Dateien und Ordner wieder gelöscht werden sollten. Desweiteren wird auf die Konfigurationsdatein hingewiesen, die noch erweiterterte Einstellungen nach der Installation bieten. Leider ist dort festzustellen, dass in der Standartinstallation nicht die optimalsten Sicherheitseinstellungen getroffen sind. Danach kann man sich nach der erfolgreichen Installation auf die neue Seite stürzen.
+
 ###Erstellung einer Beispielseite
