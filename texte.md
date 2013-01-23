@@ -58,11 +58,17 @@ Da ProcessWire doch eine eher kleine Nutzerbasis hat ist es um so erstaunlicher 
 ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere Datenbanktypen werden dabei nicht unterstützt.
 
 > Ein Unix oder Windows Webserver mit Apache
+
 > PHP Version 5.2.4 oder neuer
+
 > MySQL 5.0.15 oder neuer
+
 > mod_rewrite muss aktiviert sein
+
 > .htaccess Daten müssen nutzbar sein
+
 > Die GD 2 Bibliothek muss in PHP installiert sein
+
 > PHP sollte mysqli unterstützen, ist jedoch nicht nötig
 
 ####Installation
