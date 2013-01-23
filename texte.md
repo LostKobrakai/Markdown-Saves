@@ -69,7 +69,7 @@ ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere
 
 > Die GD 2 Bibliothek muss in PHP installiert sein
 
-> PHP sollte mysqli unterstützen, ist jedoch nicht nötig
+> Optional: PHP sollte mysqli unterstützen
 
 ####Start
 
@@ -103,25 +103,21 @@ Die Präsentation von ProcessWire direkt auf dem System aufgebaut zeigt am beste
 
 ####Struktur
 
-Der Inhalt der Webseite sollte nun auf verschiedene Einzelseiten aufgeteilt werden. Dabei kann ich auf die bestehende Überschriftenstruktur meiner Texte zurückgreifen.
+Der Inhalt der Webseite sollte nun auf verschiedene Einzelseiten aufgeteilt werden. Das erleichtert die spätere Bearbeitbarkeit der Texte im Backend. Dabei kann ich auf die bestehende Überschriftenstruktur meiner Texte zurückgreifen.
 
 #Processwire
 ##Was ist Processwire
 ##Warum habe ich mich für Processwire entschieden
--
 ###Pages
 ####Hierarchie
 ####Alles ist gleich
 ####Custom Fields
--
 ###API
--
 ###Sonstige Eigenschaften
 ####Theming
 ####Module
 ####Rechtemanagement
 ####Community
--
 ##Praktische Anwendung
 ###Installation
 ####Vorraussetzungen
@@ -131,8 +127,60 @@ Der Inhalt der Webseite sollte nun auf verschiedene Einzelseiten aufgeteilt werd
 ####Schritt 3: MySQL
 ####Schritt 4: Administrator Konto einrichten
 ####Schritt 5 & 6: Abschluss der Installation
--
 ###Erstellung einer Beispielseite
 ####Idee
 ####Struktur
+
+####Aufbau im Backend
+
+Bevor ich angefangen habe die Seiten zu erstellen, habe ich alle unnützen Seiten, Templates und Felder gelöscht, um jetzt sauber meine eigenen Seiten zu erstellen. Da ich meine Seitenstruktur im Backend nach meinen Überschriften richte fällt es nicht schwer ein Template dafür zu erstellen. Jede Überschrift hat einen Titel und optional Text dazu. Unterpunkte erstelle ich durch die Hierarchie im Seitenbaum.
+
+Unter Add Template erstelle ich ein neues Template `heading-structure`. Ich erstelle erstmal das Backend und füge danach die Templatedatei hinzu. Alternativ könnte man hier auch ein Template zu einer bereits bestehenden Templatedatei erstellen. Hier wäre das für das Impressum möglich.
+
+Danach bearbeite ich das neu erstellte Template. Als Felder ist bereits title enthalten. Dieses ist für alle Seiten nötig. Ich füge nun meine eigenen Felder an: `heading`, `images` und `body`, also Headline und Text.
+
+In den anderen Tabs könnte man jetzt noch genauere Einstellungen zu dem Template treffen, diese sind bis auf eine Ausnahme nicht nötig.
+
+Da meine Webseite am Ende aus einer Seite bestehen soll, werden die Inhalte aus allen `heading-structure` Seiten zusammengefügt, um dabei die Kontrolle über die Inhalte zu behalten und dass nicht zufällig eine falsche Seite in mein Dokument gelangt verbiete ich andere Templates außer `heading-structure` als Kindseiten einer `heading-structure` Seite. Dies ist möglich unter `FAMILY`, `Allowed tamplate(s) for children`.
+
+Nun erstelle ich die erste Seite. Headline und Text einfügen und speichern sowie veröffentlichen. Das mache ich mit allen Unterüberschriften und deren Texten und Bildern. Bilder lassen sich im Body einfügen, da dieser kein reines Textfeld, sondern ein Rich-Text-Editor beinhaltet. Organisiert werden die Bilder jedoch über das Images-Feld. Am Ende habe ich dann im Seitenbaum einen Ast mit meine ganze Textstruktur.
+
+####Inhalt auf die Webseite bringen
+
+Bisher ist der komplette Text nur in einzelnen Teilen im Backend zu sehen. Nun erstelle ich eine neue Templatedatei `heading-structure.php`, über die dann letztlich die Seite ausgegeben wird. Sobald die Datei im Ordner `/site/templates` ist, wird sie automatisch erkannt und mit dem Template im Backend verwendet.
+
+```
+<?php
+/**
+ * Documents template
+ *
+ */
+
+function recurse($page, $depth=1){
+	//HTML Ausgeben
+	echo "<h$depth>".$page->get("headline|title")."</h$depth>\n";
+	if($page->body) echo $page->body."\n";
+
+	//Funktion in alle Kindseiten weiterreichen
+	foreach ($page->children as $child) {
+		recurse($child, $depth+1);
+	}
+}
+
+?>
+<!doctype html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<title><?php echo $page->get("headline|title"); ?> &mdash; Benjamin Milde</title>
+	<link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,900' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="<?php echo $config->urls->templates?>style.css">
+	<script type="text/javascript" src="<?php echo $config->urls->templates?>scripts/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="<?php echo $config->urls->templates?>scripts/main.js"></script>
+</head>
+<body>
+	<?php recurse($page); ?>
+</body>
+</html>
+```
 
