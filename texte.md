@@ -6,15 +6,15 @@ ProcessWire ist ein serverseitiges Open Source Content Management System (CMS) d
 
 ##Warum habe ich mich für Processwire entschieden
 
-ProcessWire bietet dem Anwender ein solide aufgebautes CMS, dass sich durch einige Eigenheiten auszeichnet. Diese ermöglichen jedoch eine extrem steile Lernkurve für Einsteiger mit einem simplen und ebenso mächtigem System.
+ProcessWire bietet dem Anwender ein solide aufgebautes CMS, dass sich durch einige Eigenheiten auszeichnet. Diese ermöglichen jedoch eine extrem steile Lernkurve für Einsteiger bei einem simplen und ebenso mächtigem System.
 
 ###Pages
 
-ProcessWire strukturiert alle Inhalte, ganz im Gegenteil zu ähnlichen Systemen, auf "einer" Ebene: in Seiten. Im ersten Moment erscheind dieser Gedanke etwas abwägig, jedoch zeigt sich schnell wie effektiv dieses Vorgehen sein kann.
+ProcessWire strukturiert alle Inhalte, ganz im Gegenteil zu ähnlichen Systemen, auf *einer* Ebene: in Seiten. Im ersten Moment erscheind dieser Gedanke etwas abwägig, jedoch zeigt sich schnell wie effektiv dieses Vorgehen sein kann.
 
 ####Hierarchie
 
-Daten werden im Seitenbaum hierarchisch abgelegt. Durch unbegrenzte Verschachtelung und verschiedenen Sortierungsfunktionen sind sie dort leicht zu organisieren. Sämtliche Daten sind außerdem an einem Ort und nicht in vielen Unterfunktionen versteckt oder gar nur in der Datenbank vorhanden.
+Einzelne Seiten werden im Seitenbaum hierarchisch abgelegt. Diese können dort öffentlich sein und somit auf der Webseite angezeigt werden oder aber versteckt um nur als Speicherplatz zu dienen. Durch unbegrenzte Verschachtelung und verschiedenen Sortierungsfunktionen sind sie dort leicht zu organisieren. Sämtliche Daten sind außerdem an einem Ort und nicht in vielen Unterfunktionen versteckt oder gar nur in der Datenbank vorhanden.
 
 ####Alles ist gleich
 
@@ -32,37 +32,64 @@ Der zweite große Vorteil der API im Vergleich zu anderen Systemen ist, dass zu 
 
 Neben den Vorteilen der API an sich, ist sie auch sehr gut dokumentiert, was nicht zuletzt auf die relativ wenigen nötigen Funktionen zurückzuführen ist.
 
+###Sonstige Eigenschaften
+
+####Theming
+
+ProcessWire verwendet, wie an der API schon zu erkennen war PHP Templates für das Theming. Dabei ist zu beachten, dass in ProcessWire das Wort Template für 2 Dinge benutzt wird. Einerseits ist ein Template eine Zusammenstellung vieler Datenfelder im Backend und Vorlage für Seiten, andereseits die Datei in der die Daten aus den Datenfeldern in die HTML-Vorlage übertragen werden. Das ganze ist jedoch trotzdem Sinnvoll, da jedes Seitentemplate im Adminmenü, dass später auf der Webseite angezeigt werden soll, auch eine gleichnamige Templatedatei besitzen muss.
+
+####Module
+
+Module sind das Herzstück von ProcessWire. Das System besteht selbst aus vielen Modulen und somit sind selbst Kernelemente mit Modulen veränderbar. Bei der Installation mitgeliefert werden unter anderem Module zum Aufbau mehrsprachiger Seiten oder auch ein Caching-Modul. Wem die Funktionen von ProcessWire dann zu eingeschränkt sind, oder wenn man sich bestimmte Arbeitsabläufe erleichtern will, dann gibt es die Möglichkeit mit einer ähnlichen API, wie der zum Theming, Module zu erstellen. Einige Module sind auch auf der Webseite von ProcessWire zu finden, jedoch ist die Auswahl im Vergleich zu den großen Konkurrenten eher beschränkt.
+
+####Rechtemanagement
+
+ProcessWire besitzt ein solides Rechtemanagement, in dem sich nach ähnlichem Prinzip wie auch bei den Pages Nutzerrollen erstellen lassen. Dazu hat man die Möglichkeit Nutzerrechte zu definieren, diese zu verschiedenen Rollen zu kombinieren und dann einzelnen Nutzern zuzuweisen. Diese muss man jedoch selbst erstellen, da standartgemäß nur die Rollen `guest` und `Admin` definiert sind.
+
+####Community
+
+Da ProcessWire doch eine eher kleine Nutzerbasis hat ist es um so erstaunlicher wie gut die Community funktioniert. Der Entwickler *Ryan Cramer* steht mit einem kleinem Team an Moderatoren im eigenem Forum mit Rat und Tat zur Seite und hilft Einsteigern, wie auch erfahrenen Leuten bei ihren Problemen. Dabei ist er auch immer offen für Vorschläge und Verbesserungen für das CMS.
+
 ##Praktische Anwendung
 
 ###Installation
 
 ####Vorraussetzungen
-ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere Datenbanktypen werden zwar nicht unterstützt, aber diese werden generell eher selten genutzt, so dass von den meisten Serveranbietern auch eine MySQL Datenbank zur Verfügung steht.
+ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere Datenbanktypen werden dabei nicht unterstützt.
 
-> A Unix or Windows-based web server running Apache
-> PHP version 5.2.4 or greater
-> MySQL 5.0.15 or greater (later versions of 4.x may also work)
-> Apache must have mod_rewrite enabled
-> Apache must support .htaccess files
-> PHP's bundled GD 2 library
-> PHP should support mysqli
-> Recommended but not required
+> Ein Unix oder Windows Webserver mit Apache
+> PHP Version 5.2.4 oder neuer
+> MySQL 5.0.15 oder neuer
+> mod_rewrite muss aktiviert sein
+> .htaccess Daten müssen nutzbar sein
+> Die GD 2 Bibliothek muss in PHP installiert sein
+> PHP sollte mysqli unterstützen, ist jedoch nicht nötig
 
-Installation
+####Installation
 
 Die Installation von ProcessWire verläuft sehr ähnlich zu anderen vergleichbaren Systemen. Es werden Berechtigungen gecheckt, die MySQL und Adminzugangsdaten abgefragt und das System aufgespielt.
 
+#####Start
+
 Die ProcessWire Installation funktioniert über ein Webinterface, das mit dem Softwarepaket mitgeliefert wird. Beim ersten Aufruf des Stammverzeichnis wird man automatisch auf die Installationsseite weitergeleitet.
 
-Vor der Installation wird man dazu aufgefordert den Ordner der vorinstallierten Webseite umzubenennen. Alternativ könnte man sich unter dem angegebenen Link auch alternative Voreinstellungen herunterladen. Angeboten werden im Moment ein vorgefertigter Blog und ein "Blank"-Profil, dass nur die minimalsten Voreinstellungen enthält und nur für Entwickler interessant ist.
+#####Schritt 1: Seitenvoreinstellungen wählen
 
-Im ersten Schritt der Installation wird die Systemkompatibilität geprüft. Für die meisten Webserver sollte es hier keine Probleme geben. Die hier gezeigten Fehler entstanden aufgrund einer lokalen Installation. Die fehlenden Berechtigungen sind jedoch schnell behoben. Sollten noch andere Fehler angezeigt werden sollte man sich im Zweifelsfall die Systemadministratoren kontaktieren.
+Vor der Installation wird man dazu aufgefordert den Ordner der vorinstallierten Webseite umzubenennen. Alternativ könnte man sich unter dem angegebenen Link auch alternative Voreinstellungen herunterladen und umbenennen. Angeboten werden im Moment ein vorgefertigter Blog und ein "Blank"-Profil, dass nur die minimalsten Voreinstellungen enthält und für Entwickler interessant ist.
 
-Sobald alles in Ordnung ist kann es weiter gehen zum nächsten Schritt:
+#####Schritt 2: Check der Installationvorraussetzungen
 
-Die MySQL Datenbankeinrichtung ist unerwartet schon Schritt 3. Hier sollten keinerlei Schwierigkeiten auftreten.
+Danach wird die Systemkompatibilität geprüft. Für die meisten Webserver sollte es hier keine Probleme geben. Die hier gezeigten Fehler entstanden aufgrund einer lokalen Installation. Die fehlenden Berechtigungen sind jedoch schnell behoben. Sollten noch andere Fehler angezeigt werden sollte man im Zweifelsfall die Systemadministratoren kontaktieren.
+
+#####Schritt 3: MySQL
+
+Die MySQL Datenbankeinrichtung sollte keine Schwierigkeiten machen. Die richtigen Daten in die Felder eintragen und warten, bis die Voreinstellungen installiert sind.
+
+#####Schritt 4: Administrator Konto einrichten
 
 Den Administrator Account erstellen und man ist so gut wie fertig.
+
+#####Schritt 5 & 6: Abschluss der Installation
 
 Man sollte in dem Masse der grünen und vermeintlich fertigen Balken nicht überlesen, dass aus Sicherheitsgründen noch einige Dateien und Ordner wieder gelöscht werden sollten. Desweiteren wird auf die Konfigurationsdatein hingewiesen, die noch erweiterterte Einstellungen nach der Installation bieten. Leider ist dort festzustellen, dass in der Standartinstallation nicht die optimalsten Sicherheitseinstellungen getroffen sind. Danach kann man sich nach der erfolgreichen Installation auf die neue Seite stürzen.
 
