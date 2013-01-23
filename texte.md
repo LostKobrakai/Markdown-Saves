@@ -55,7 +55,7 @@ Da ProcessWire doch eine eher kleine Nutzerbasis hat ist es um so erstaunlicher 
 ###Installation
 
 ####Vorraussetzungen
-ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere Datenbanktypen werden dabei nicht unterstützt.
+ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere Datenbanktypen werden dabei nicht unterstützt. Vor allem aufgrund der geringen Nutzerbasis gibt es bisher keine Hoster, die ProcessWire bereits vorinstalliert anbieten.
 
 > Ein Unix oder Windows Webserver mit Apache
 
@@ -71,32 +71,68 @@ ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere
 
 > PHP sollte mysqli unterstützen, ist jedoch nicht nötig
 
-####Installation
-
-Die Installation von ProcessWire verläuft sehr ähnlich zu anderen vergleichbaren Systemen. Es werden Berechtigungen gecheckt, die MySQL und Adminzugangsdaten abgefragt und das System aufgespielt.
-
-#####Start
+####Start
 
 Die ProcessWire Installation funktioniert über ein Webinterface, das mit dem Softwarepaket mitgeliefert wird. Beim ersten Aufruf des Stammverzeichnis wird man automatisch auf die Installationsseite weitergeleitet.
 
-#####Schritt 1: Seitenvoreinstellungen wählen
+####Schritt 1: Seitenvoreinstellungen wählen
 
 Vor der Installation wird man dazu aufgefordert den Ordner der vorinstallierten Webseite umzubenennen. Alternativ könnte man sich unter dem angegebenen Link auch alternative Voreinstellungen herunterladen und umbenennen. Angeboten werden im Moment ein vorgefertigter Blog und ein "Blank"-Profil, dass nur die minimalsten Voreinstellungen enthält und für Entwickler interessant ist.
 
-#####Schritt 2: Check der Installationvorraussetzungen
+####Schritt 2: Check der Installationvorraussetzungen
 
 Danach wird die Systemkompatibilität geprüft. Für die meisten Webserver sollte es hier keine Probleme geben. Die hier gezeigten Fehler entstanden aufgrund einer lokalen Installation. Die fehlenden Berechtigungen sind jedoch schnell behoben. Sollten noch andere Fehler angezeigt werden sollte man im Zweifelsfall die Systemadministratoren kontaktieren.
 
-#####Schritt 3: MySQL
+####Schritt 3: MySQL
 
 Die MySQL Datenbankeinrichtung sollte keine Schwierigkeiten machen. Die richtigen Daten in die Felder eintragen und warten, bis die Voreinstellungen installiert sind.
 
-#####Schritt 4: Administrator Konto einrichten
+####Schritt 4: Administrator Konto einrichten
 
 Den Administrator Account erstellen und man ist so gut wie fertig.
 
-#####Schritt 5 & 6: Abschluss der Installation
+####Schritt 5 & 6: Abschluss der Installation
 
 Man sollte in dem Masse der grünen und vermeintlich fertigen Balken nicht überlesen, dass aus Sicherheitsgründen noch einige Dateien und Ordner wieder gelöscht werden sollten. Desweiteren wird auf die Konfigurationsdatein hingewiesen, die noch erweiterterte Einstellungen nach der Installation bieten. Leider ist dort festzustellen, dass in der Standartinstallation nicht die optimalsten Sicherheitseinstellungen getroffen sind. Danach kann man sich nach der erfolgreichen Installation auf die neue Seite stürzen.
 
 ###Erstellung einer Beispielseite
+
+####Idee
+
+Die Präsentation von ProcessWire direkt auf dem System aufgebaut zeigt am besten wie einfach das System zu nutzen ist. Außerdem zeigt es viel besser, was mit den Einstellung im Backend letztlich erreicht wurde.
+
+####Struktur
+
+Der Inhalt der Webseite sollte nun auf verschiedene Einzelseiten aufgeteilt werden. Dabei kann ich auf die bestehende Überschriftenstruktur meiner Texte zurückgreifen.
+
+#Processwire
+##Was ist Processwire
+##Warum habe ich mich für Processwire entschieden
+-
+###Pages
+####Hierarchie
+####Alles ist gleich
+####Custom Fields
+-
+###API
+-
+###Sonstige Eigenschaften
+####Theming
+####Module
+####Rechtemanagement
+####Community
+-
+##Praktische Anwendung
+###Installation
+####Vorraussetzungen
+####Start
+####Schritt 1: Seitenvoreinstellungen wählen
+####Schritt 2: Check der Installationvorraussetzungen
+####Schritt 3: MySQL
+####Schritt 4: Administrator Konto einrichten
+####Schritt 5 & 6: Abschluss der Installation
+-
+###Erstellung einer Beispielseite
+####Idee
+####Struktur
+
