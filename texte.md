@@ -69,7 +69,11 @@ ProcessWire läuft auf Apache mit aktuellen Versionen von PHP und MySQL. Weitere
 
 > Die GD 2 Bibliothek muss in PHP installiert sein
 
-> Optional: PHP sollte mysqli unterstützen
+> PHP muss mysqli unterstützen
+
+> Optional: Multi-byte String Unterstüzung in PHP (mbstring)
+
+> Optional: PHP Kurztags aktiviert
 
 ####Start
 
@@ -105,31 +109,31 @@ Die Präsentation von ProcessWire direkt auf dem System aufgebaut zeigt am beste
 
 Der Inhalt der Webseite sollte nun auf verschiedene Einzelseiten aufgeteilt werden. Das erleichtert die spätere Bearbeitbarkeit der Texte im Backend. Dabei kann ich auf die bestehende Überschriftenstruktur meiner Texte zurückgreifen.
 
-#Processwire
-##Was ist Processwire
-##Warum habe ich mich für Processwire entschieden
-###Pages
-####Hierarchie
-####Alles ist gleich
-####Custom Fields
-###API
-###Sonstige Eigenschaften
-####Theming
-####Module
-####Rechtemanagement
-####Community
-##Praktische Anwendung
-###Installation
-####Vorraussetzungen
-####Start
-####Schritt 1: Seitenvoreinstellungen wählen
-####Schritt 2: Check der Installationvorraussetzungen
-####Schritt 3: MySQL
-####Schritt 4: Administrator Konto einrichten
-####Schritt 5 & 6: Abschluss der Installation
-###Erstellung einer Beispielseite
-####Idee
-####Struktur
+	#Processwire
+	##Was ist Processwire
+	##Warum habe ich mich für Processwire entschieden
+	###Pages
+	####Hierarchie
+	####Alles ist gleich
+	####Custom Fields
+	###API
+	###Sonstige Eigenschaften
+	####Theming
+	####Module
+	####Rechtemanagement
+	####Community
+	##Praktische Anwendung
+	###Installation
+	####Vorraussetzungen
+	####Start
+	####Schritt 1: Seitenvoreinstellungen wählen
+	####Schritt 2: Check der Installationvorraussetzungen
+	####Schritt 3: MySQL
+	####Schritt 4: Administrator Konto einrichten
+	####Schritt 5 & 6: Abschluss der Installation
+	###Erstellung einer Beispielseite
+	####Idee
+	####Struktur
 
 ####Aufbau im Backend
 
@@ -145,42 +149,107 @@ Da meine Webseite am Ende aus einer Seite bestehen soll, werden die Inhalte aus 
 
 Nun erstelle ich die erste Seite. Headline und Text einfügen und speichern sowie veröffentlichen. Das mache ich mit allen Unterüberschriften und deren Texten und Bildern. Bilder lassen sich im Body einfügen, da dieser kein reines Textfeld, sondern ein Rich-Text-Editor beinhaltet. Organisiert werden die Bilder jedoch über das Images-Feld. Am Ende habe ich dann im Seitenbaum einen Ast mit meine ganze Textstruktur.
 
-####Inhalt auf die Webseite bringen
+####Templatedatei erstellen
 
 Bisher ist der komplette Text nur in einzelnen Teilen im Backend zu sehen. Nun erstelle ich eine neue Templatedatei `heading-structure.php`, über die dann letztlich die Seite ausgegeben wird. Sobald die Datei im Ordner `/site/templates` ist, wird sie automatisch erkannt und mit dem Template im Backend verwendet.
 
-```
-<?php
-/**
- * Documents template
- *
- */
+	<?php
+	/**
+	 * Documents template
+	 *
+	 */
 
-function recurse($page, $depth=1){
-	//HTML Ausgeben
-	echo "<h$depth>".$page->get("headline|title")."</h$depth>\n";
-	if($page->body) echo $page->body."\n";
+	//Daten holen - Nur ein Aufruf für mehrere Anwendungen
+	function fetch_data($page, $depth=1){
+		$heading[0] = array($page->id, $page->get("headline|title"), $page->body, $depth);
 
-	//Funktion in alle Kindseiten weiterreichen
-	foreach ($page->children as $child) {
-		recurse($child, $depth+1);
+		if(count($page->children) > 0){
+			foreach($page->children as $child){
+				$children[] = fetch_data($child, $depth+1);
+			}
+			$heading[1] = $children;
+		}
+		return $heading;
 	}
-}
+	//Funktionsaufruf
+	$data = fetch_data($page);
 
-?>
-<!doctype html>
-<html lang="de">
-<head>
-	<meta charset="UTF-8">
-	<title><?php echo $page->get("headline|title"); ?> &mdash; Benjamin Milde</title>
-	<link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,900' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="<?php echo $config->urls->templates?>style.css">
-	<script type="text/javascript" src="<?php echo $config->urls->templates?>scripts/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="<?php echo $config->urls->templates?>scripts/main.js"></script>
-</head>
-<body>
-	<?php recurse($page); ?>
-</body>
-</html>
-```
+	//HTML für die Webseite an sich
+	function recurse_html($data){
+		$id = $data[0][0];
+		$title = $data[0][1];
+		$body = $data[0][2];
+		$depth = $data[0][3];
 
+		//HTML Ausgeben
+		echo "<h$depth class='h_".$id."' id='$id' name='$id'>".$title."</h$depth>\n";
+		if($body) echo $body."\n";
+		if(isset($data[1])){
+			foreach($data[1] as $child){
+				recurse_html($child);
+			}
+		}
+	}
+
+	//HTML für die Navigation
+	function recurse_list($data, $maxdepth=0){
+		$id = $data[0][0];
+		$title = $data[0][1];
+		$depth = $data[0][3];
+
+		//HTML Liste Ausgeben
+		echo "<li class=''><a href='#$id' class='h_$id d_$depth'>".$title."</a></li>\n";
+		if(isset($data[1]) && $depth < $maxdepth){
+			foreach($data[1] as $child){
+				recurse_list($child, $maxdepth);
+			}
+		}
+	}
+
+	?>
+	<!doctype html>
+	<html lang="de">
+	<head>
+		<meta charset="UTF-8">
+		<title><?php echo $page->get("headline|title"); ?> &mdash; Benjamin Milde</title>
+		<link href='http://fonts.googleapis.com/css?family=Merriweather:400,900' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="<?php echo $config->urls->templates?>style.css">
+		<script type="text/javascript" src="<?php echo $config->urls->templates?>scripts/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript" src="<?php echo $config->urls->templates?>scripts/rainbow-custom.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="<?php echo $config->urls->templates?>scripts/rb/github.css">
+		<script type="text/javascript">
+		$(document).ready(function(){
+			$('nav').bind({click: function(){
+				$('ul', this).toggleClass("hovered");
+			}, mouseenter: function(){
+				$('ul', this).addClass("hovered");
+			}, mouseleave: function(){
+				$('ul', this).removeClass("hovered");
+			}});
+			$("code").each(function(){
+				if($(this).attr("data-language") == undefined){
+					$(this).attr("data-language", "php");
+				}
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<?php recurse_list($data, 3); ?>
+			</ul>
+		</nav>
+		<?php recurse_html($data); ?>
+	</body>
+	</html>
+
+Die Templatedatei sieht ersteinmal sehr kompliziert aus. Dabei ist es garnicht so schwierig. Die Datei besteht aus 2 logischen Teilen. Der obere Teil mit den 3 Funktionen sorgt für die Datenabwicklung, während in der zweiten Hälfte das HTML Template steht, in das nurnoch mit kurzen Funktionsaufrufen (`<?php recurse_list($data, 3); ?>`, `<?php recurse_html($data); ?>`) die Daten eingebettet werden.
+
+Zu der ersten Hälfte ist nicht viel zu sagen, außer, dass man genau sieht, dass die Daten mit annähernd keinem Markup übergeben werden. Lediglich `$page->body` liefert einige HTML-Tags zum Beispiel für Absätze, `<p>`, oder für Zitate, `<blockquote>`. Die komplette Verarbeitung der Daten muss man selbstständig aufbauen. Was aufwendig klingt hat jedoch die Vorteile, dass man nicht erst viele systemeigene Funktionen lernen muss bevor man anfangen kann und die volle Kontrolle über den Prozess behält. In meinem Fall verhindere ich bewusst einen 2ten großen Datenbankaufruf, indem ich die Daten lokal zwischenspeichere, um sie dann dafür 2 mal, für die Navigation und den Seiteninhalt, zu verarbeiten.
+
+Das HTML Template ist auf Grund der simplen Seitenstruktur relativ klein. Für mehrseitige Templates könnte man Kopf- und Fußbereiche der Seite auch in externe Dateien, z.B. `head.inc` und `footer.inc`, auslagern. Damit lassen sie sich in anderen Templates wiederverwenden. Da ich nur ein Template nutze, spare ich die Aufrufe zusätzlicher Dateien.
+
+##Fazit
+
+Ich bin froh mit ProcessWire ein Content-Management-System gefunden zu haben, dass mich als Webentwickler mehr unterstützt, als mich zu behindern. Meine Erfahrungen mit anderen Systemen wie Wordpress, Joomla oder Drupal haben gezeigt, dass es oft ein langwieriges Lesen der Dokumentation bedarf bis man eine Seite nach seinen Wünschen aufgebaut hat. ProcessWire dagegen lässt den Entwickler mit bereits bekanntem  arbeiten und liefert nur eine API für den Datentransfer.
